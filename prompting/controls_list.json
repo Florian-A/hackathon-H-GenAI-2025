@@ -1,0 +1,66 @@
+[
+    {
+        "candidate_feature_combo": [
+            "factures.CONSO_FACTURE",
+            "conso.VOLUME_MOIS"
+        ],
+        "reason_why_it_is_a_candidate": "Both represent consumption volumes and should be correlated, though factures might represent aggregated periods while VOLUME_MOIS is monthly"
+    },
+    {
+        "candidate_feature_combo": [
+            "factures.DATE_RELEVE_INDEX_FACTURE",
+            "conso.DATE_CONSO_MOIS"
+        ],
+        "reason_why_it_is_a_candidate": "These dates should align as they both represent when consumption was measured"
+    },
+    {
+        "candidate_feature_combo": [
+            "factures.NB_JOURS_CONNUS",
+            "calculated_difference(DATE_RELEVE_INDEX_FACTURE, DATE_RELEVE_INDEX_PRECEDENT_FACTURE_COMPOSITE)"
+        ],
+        "reason_why_it_is_a_candidate": "NB_JOURS_CONNUS should equal the difference between these two dates"
+    },
+    {
+        "candidate_feature_combo": [
+            "factures.CLE_ABONNEMENT",
+            "abonnements.CLE_ABONNEMENT"
+        ],
+        "reason_why_it_is_a_candidate": "These are foreign key relationships and should match exactly"
+    },
+    {
+        "candidate_feature_combo": [
+            "conso.DIAMETRE_NOMINAL",
+            "conso.VOLUME_MOIS"
+        ],
+        "reason_why_it_is_a_candidate": "Larger diameter nominaux should correlate with higher consumption volumes"
+    },
+    {
+        "candidate_feature_combo": [
+            "abonnements.DATE_RESILIATION_ABONNEMENT",
+            "factures.DATE_EMISSION_FACTURE"
+        ],
+        "reason_why_it_is_a_candidate": "No factures should be emitted after resiliation date"
+    },
+    {
+        "candidate_feature_combo": [
+            "conso.CLE_PDS",
+            "transformed(factures.CLE_ABONNEMENT)",
+            "transformed(abonnements.CLE_ABONNEMENT)"
+        ],
+        "reason_why_it_is_a_candidate": "After transformation (removing last 2 characters and replacing '_' with '|'), these should match"
+    },
+    {
+        "candidate_feature_combo": [
+            "factures.NB_FACTURES_PAR_PDS",
+            "COUNT(factures.CLE_FACTURE) GROUP BY CLE_PDS"
+        ],
+        "reason_why_it_is_a_candidate": "The number of factures per PDS should match the actual count when grouped"
+    },
+    {
+        "candidate_feature_combo": [
+            "abonnements.DATE_SOUSCRIPTION_ABONNEMENT",
+            "conso.DATE_CONSO_MOIS"
+        ],
+        "reason_why_it_is_a_candidate": "Consumption dates should fall between subscription and resiliation dates"
+    }
+]
