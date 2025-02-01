@@ -2,9 +2,10 @@ interface ResultDisplayProps {
     data: any;
     success: boolean;
     message: string;
+    expanded?: boolean;
 }
 
-function ResultDisplay({ data, success, message }: ResultDisplayProps) {
+function ResultDisplay({ data, success, message, expanded = false }: ResultDisplayProps) {
     if (!data && !message) return null;
 
     return (
@@ -13,7 +14,8 @@ function ResultDisplay({ data, success, message }: ResultDisplayProps) {
                 {message}
             </div>
             {data && (
-                <div className="max-h-40 overflow-auto bg-gray-50 p-2 rounded border border-gray-200">
+                <div className={`overflow-auto bg-gray-50 p-2 rounded border border-gray-200 transition-all duration-200 ${expanded ? 'max-h-80' : 'max-h-40'
+                    }`}>
                     <pre className="text-xs">{JSON.stringify(data, null, 2)}</pre>
                 </div>
             )}

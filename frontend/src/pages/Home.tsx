@@ -62,10 +62,10 @@ function Home() {
 
     return (
         <div className="bg-white h-full">
-            <div className="max-w-7xl mx-auto px-4 flex gap-6">
+            <div className="max-w-full h-[100vh] flex">
                 {/* Liste des tables (gauche) */}
-                <div className="w-1/3 border-r border-gray-200 pr-6">
-                    <div className="flex items-center justify-between mb-4">
+                <div className="w-96 border-r border-gray-200 py-6 px-4">
+                    <div className="flex items-center justify-between">
                         <h2 className="text-lg font-bold text-black">Tables disponibles</h2>
                         <button
                             onClick={toggleAll}
@@ -74,9 +74,9 @@ function Home() {
                             {selectedTables.size === Object.keys(tables).length ? 'Désélectionner tout' : 'Sélectionner tout'}
                         </button>
                     </div>
-                    <div className="space-y-2">
+                    <div className="p-2">
                         {Object.keys(tables).map((tableName) => (
-                            <div key={tableName} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded group">
+                            <div key={tableName} className="flex items-center gap-3 hover:bg-gray-50 rounded group">
                                 <input
                                     type="checkbox"
                                     checked={selectedTables.has(tableName)}
@@ -99,7 +99,7 @@ function Home() {
                 </div>
 
                 {/* Structure de la table (droite) */}
-                <div className="flex-1">
+                <div className="flex-1 p-4">
                     {displayedTable ? (
                         <TableStructure
                             tableName={displayedTable}

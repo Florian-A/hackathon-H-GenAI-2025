@@ -18,6 +18,7 @@ export default function Resultats() {
   const [results, setResults] = useState<{ [key: number]: any }>({});
   const [loading, setLoading] = useState<{ [key: number]: boolean }>({});
   const [error, setError] = useState<string | null>(null);
+  const [selectedRow, setSelectedRow] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchControls = async () => {
@@ -94,7 +95,7 @@ export default function Resultats() {
   return (
     <div className="bg-white p-6 flex flex-col">
       <div className="flex flex-col flex-grow">
-        <h1 className="text-3xl font-bold text-black mb-4">Liste des contrôles SQL</h1>
+        <h1 className="text-2xl font-bold text-black mb-4">Liste des contrôles SQL</h1>
 
         <div className="bg-white rounded-lg shadow-md border-2 border-[#EE2737] flex flex-col">
           <div className="overflow-auto h-[80vh]">
@@ -102,42 +103,51 @@ export default function Resultats() {
               <thead className="sticky top-0 bg-gray-50 border-b-2 border-gray-200">
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Nom</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-64">Description</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[40%]">Commande SQL</th>
-                  <th className="px-4 py-2 text-center text-sm font-semibold text-black w-32">Actions</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black">Résultats</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-black min-w-[200px]">Description</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-black min-w-[400px] w-[30%]">Commande SQL</th>
+                  <th className="px-4 py-2 text-center text-sm font-semibold text-black w-16">Actions</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[25%]">Résultats</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {controls.map(control => (
-                  <tr key={control.id} className="hover:bg-gray-50">
+                  <tr
+                    key={control.id}
+                    className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 ${selectedRow === control.id ? 'bg-gray-50' : ''
+                      }`}
+                    onClick={() => setSelectedRow(selectedRow === control.id ? null : control.id)}
+                  >
                     <td className="px-4 py-2 text-sm font-medium text-black truncate">
                       {control.control_name}
                     </td>
                     <td className="px-4 py-2 text-sm text-gray-600 truncate">
                       {control.control_description}
                     </td>
-                    <td className="px-4 py-2 w-[40%]">
+                    <td className={`px-4 py-2 min-w-[400px] w-[30%] transition-all duration-200 ${selectedRow === control.id ? 'py-4' : ''
+                      }`}>
                       <SqlQueryCell
                         value={editedQueries[control.id]}
                         onChange={(value) => setEditedQueries(prev => ({
                           ...prev,
                           [control.id]: value
                         }))}
+                        expanded={selectedRow === control.id}
                       />
                     </td>
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
                       <ExecuteButton
                         onClick={() => executeQuery(control.id)}
                         loading={loading[control.id]}
                       />
                     </td>
-                    <td className="px-4 py-2">
+                    <td className={`px-4 py-2 transition-all duration-200 ${selectedRow === control.id ? 'py-4' : ''
+                      }`}>
                       {results[control.id] && (
                         <ResultDisplay
                           data={results[control.id].data}
                           success={results[control.id].success}
                           message={results[control.id].message}
+                          expanded={selectedRow === control.id}
                         />
                       )}
                     </td>
