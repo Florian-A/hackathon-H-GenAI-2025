@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Play, AlertCircle } from 'lucide-react';
 import { Control } from './types';
 
-const API_URL = '/api';
+const API_URL = process.env.API_BASE_URL || '';
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 
@@ -16,7 +16,8 @@ function App() {
 
   const fetchWithRetry = async (retries: number = 0): Promise<Control[]> => {
     try {
-      const response = await axios.get(API_URL);
+      const url = API_URL.endsWith('/') ? API_URL : `${API_URL}/`;
+      const response = await axios.get(url);
       return response.data;
     } catch (err) {
       if (retries < MAX_RETRIES) {
@@ -42,7 +43,16 @@ function App() {
           ? `Erreur de connexion: ${err.message}` 
           : "Erreur lors du chargement des contrôles. Veuillez vérifier votre connexion et réessayer.";
         setError(errorMessage);
-        console.error('Error fetching controls:', errorMessage);
+        // Log uniquement le message d'erreur et le statut si disponible
+        if (axios.isAxiosError(err)) {
+          console.error('Error fetching controls:', {
+            message: err.message,
+            status: err.response?.status,
+            statusText: err.response?.statusText
+          });
+        } else {
+          console.error('Error fetching controls:', errorMessage);
+        }
       }
     };
 
@@ -59,12 +69,14 @@ function App() {
   const executeQuery = async (controlId: number) => {
     setLoading(prev => ({ ...prev, [controlId]: true }));
     try {
-      // Simulation d'exécution de requête
-      // Dans un environnement réel, vous devriez envoyer la requête à votre backend
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const url = API_URL.endsWith('/') ? API_URL : `${API_URL}/`;
+      const response = await axios.post(url, {
+        id: controlId,
+        sql: editedQueries[controlId]
+      });
       setResults(prev => ({
         ...prev,
-        [controlId]: { success: true, message: "Requête exécutée avec succès" }
+        [controlId]: { success: true, message: "Requête exécutée avec succès", data: response.data }
       }));
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Erreur lors de l'exécution";
