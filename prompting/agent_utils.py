@@ -13,8 +13,8 @@ def combine_prompts(
 	system_prompt : str,
 	human_prompt  : str,
 ) -> str:
-	result = "System: " + system_prompt_common + "\n" + "Human: " + human_prompt
-	return result.replace('\n', ' ').replace('\t', ' ').replace('  ', ' ')
+	result = "System: " + system_prompt_common + system_prompt + "\n" + "Human: " + human_prompt
+	return result.replace('\n', ' ').replace('\t', ' ').replace('  ', ' ').replace("\"", "`")
 
 
 def run_mistral_prompt(
@@ -35,7 +35,7 @@ def run_mistral_prompt(
 	)
 	response_output    = json.loads(response.get('body').read())
 	mistral_parse_text = response_output['outputs'][0]['text']
-	mistral_parse_text = mistral_parse_text.replace('\n', ' ')
+	# mistral_parse_text = mistral_parse_text.replace('\n', ' ')
 	mistral7b_output   = mistral_parse_text.strip()
 	return mistral7b_output
 
