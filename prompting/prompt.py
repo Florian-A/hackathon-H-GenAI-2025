@@ -5,27 +5,11 @@ import sys
 import pandas as pd
 import boto3
 import botocore
+from typing import List
 
 
-DEFAULT_CSV_FILE_PATH = "../../veolia-data-abonnements.csv"
-DEFAULT_MISTRAL_MODEL = "mistral.mixtral-8x7b-instruct-v0:1"
-DEFAULT_MAX_TOKENS    = 4096
-DEFAULT_TEMPERATURE   = 0.5
-DEFAULT_TOP_P         = 0.9
-DEFAULT_TOP_K         = 50
-
-system_prompt_common = "You are a helpful assistant designed for data science process automation. Your primary function is to assist with data cleaning, feature engineering, and metadata management. You should always provide clear and actionable suggestions, and you should avoid making assumptions or hallucinating data. "
-
-system_prompt_metadata_describer = "When providing metadata information, you should use a standardized format that includes the feature name, data type, and a brief description of the feature. "
-
-# system_prompt_metadata_improvement = "When suggesting corrections to metadata, you should clearly indicate what needs to be changed and why." 
-
-system_prompt_verif_feature_elicitation = "When identifying combinations of features that could elicit contradictions in rows, you should provide clear examples and explanations. "
-
-system_prompt_verif_value_elicitation = "When identifying specific values that seem like contradictory combinations, or single-feature impossible values, you should provide the relevant feature names, the specific values, and an explanation of why and how you think they might be contradictory. "
-
-system_prompt_sql_request = "When building an SQL request, make sure to use all the features and values in the context provided to build the appropriate SQL request. If intermediary features need to be computed, don't hesitate to do so. "
-
+from consts      import *
+from agent_utils import *
 
 
 def render_from_df__human__prompt_metadata_describer(
@@ -59,41 +43,44 @@ def render_from_df__human__prompt_metadata_describer(
 	)
 	return prompt
 
+def generate_columns_dependencies_prompts(
+	databse_description : str
+) -> List[str]:
+	prompt = f"""I have a dataset with different tables. Here is the description of the tables and their columns: {databse_description}.
+		I want you to find the correlation between the tables and between the columns.
+		Your role is to return me a list of columns that should be correlated, or equal.
+		I expect from you a json format that should look like:
+		[
+			{
+				"candidate_feature_combo": ["taille_du_batiment","releve1","releve2"],
+				"reason_why_it_is_a_candidate": "reason..."
+			},
+			...
+		]
+	"""
+	return prompt
 
-def combine_prompts(
-	system_prompt : str,
-	human_prompt  : str,
+
+def generate_request_from_tables_dependencies(
+	dataset_description  : str,
+	columns_dependency : str
 ) -> str:
-	result = "System: " + system_prompt_common + "\n" + "Human: " + human_prompt
-	return result.replace('\n', ' ').replace('\t', ' ').replace('  ', ' ')
+	prompt = f"""
+		I have a dataset. Here is the description of the dataset: {dataset_description}.
+		I have identified the following dependencies between columns.
+		Here is the dependency : {columns_dependency}.
+		I want to see all the lines that do not comply with the givent correlation.
+		Write me a SQL query that will highlight the potential problems in the problem.
+	"""
+	return prompt
 
-
-def run_mistral_prompt(
-	bedrock_runtime : botocore.client,
-	prompt          : str,
-	model_id        : str   = DEFAULT_MISTRAL_MODEL,
-	max_tokens      : int   = DEFAULT_MAX_TOKENS,
-	temperature     : float = DEFAULT_TEMPERATURE,
-	top_p           : float = DEFAULT_TOP_P,
-	top_k           : int   = DEFAULT_TOP_K
-) -> str:
-	message_body = f"""{{"prompt":"{prompt}", "max_tokens":{max_tokens}, "temperature":{temperature}, "top_p":{top_p}, "top_k":{top_k}}}"""
-	response        = bedrock_runtime.invoke_model(
-		body        = message_body,
-		modelId     = model_id,
-		accept      = "application/json",
-		contentType = "application/json",
-	)
-	response_output    = json.loads(response.get('body').read())
-	mistral_parse_text = response_output['outputs'][0]['text']
-	mistral_parse_text = mistral_parse_text.replace('\n', ' ')
-	mistral7b_output   = mistral_parse_text.strip()
-	return mistral7b_output
+def parse_agent2_output(agent2_output : str) -> List:
+	return json.loads(agent2_output)
 
 
 def main():
 	# bedrock         = boto3.client(service_name="bedrock",         region_name='us-west-2')
-	bedrock_runtime = boto3.client(service_name="bedrock-runtime", region_name='us-west-2')
+	bedrock_runtime = boto3.client(service_name = "bedrock-runtime", region_name='us-west-2')
 	test_human_prompt = render_from_df__human__prompt_metadata_describer(
 		df                  = pd.read_csv(DEFAULT_CSV_FILE_PATH),
 		df_text_description = "This dataset contains contract information about water utility clients",
@@ -105,11 +92,28 @@ def main():
 	print(description_agent_prompt)
 	agent1_output = run_mistral_prompt(
 		bedrock_runtime = bedrock_runtime,
-		prompt         = description_agent_prompt,
+		prompt          = description_agent_prompt,
 	)
 	print(agent1_output)
 
 
+	agent2_input = generate_columns_dependencies_prompts(agent1_output)
+	agent2_output = run_mistral_prompt(
+		bedrock_runtime = bedrock_runtime,
+		prompt          = agent2_input,
+	)
+
+	result = []
+	parsed_agent2_output = parse_agent2_output(agent2_output)
+	for dependency in parsed_agent2_output:
+		agen_sql_prompt = generate_request_from_tables_dependencies(agent1_output, dependency)
+		sql_query = run_mistral_prompt(
+			bedrock_runtime = bedrock_runtime,
+			prompt          = agen_sql_prompt,
+		)
+		result.append(sql_query)
+	
+	return result
 
 
 if __name__ == "__main__":
