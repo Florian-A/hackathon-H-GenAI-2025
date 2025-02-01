@@ -15,6 +15,16 @@ from agent_utils import *
 def sanitize(s:str):
 	return s.replace('"', '`')
 
+def extract_by_symbol(s:str, symbols:tuple[str,str]):
+	first_pos = s.find(symbols[0])
+	last_pos = s[::-1].find(symbols[1])
+	print(f"{first_pos=}, {last_pos=}")
+	if last_pos > 0:
+		result = s[first_pos:-last_pos]
+	else:
+		result = s[first_pos:]
+	return result
+
 
 def render_from_df__human_prompt_metadata_describer(
 	df                  : pd.DataFrame,
@@ -73,9 +83,9 @@ def render_columns_dependencies_prompts(
 		I expect from you a json format that should look like:
 		[
 			{{
-				candidate_feature_combo: [[feature1_in_combination,source_dataset_of_feature1],[feature2_in_combination,source_dataset_of_feature2],etc for as many features as are needed for the combo],
-				reasoning: explanation as to why you think it is a candidate,
-				correlation: correlated/uncorrelated/anticorrelated
+				\"candidate_feature_combo\": [[feature1_in_combination,source_dataset_of_feature1],[feature2_in_combination,source_dataset_of_feature2],etc for as many features as are needed for the combo],
+				\"reasoning\": explanation as to why you think it is a candidate,
+				\"correlation\": correlated/uncorrelated/anticorrelated
 			}},
 			...
 		]
@@ -93,7 +103,7 @@ def render_request_from_tables_dependencies(
 		I have identified the following dependencies between columns.
 		Here is the dependency : {columns_dependency}.
 		I want to see all the lines that do not comply with the givent correlation.
-		Write me a SQL query that will highlight the potential problems in the problem.
+		Write me a SQL query, in the AWS Redshift variant of SQL, that will highlight the potential problems in the problem.
 		Make sure to write only the SQL query.
 	"""
 	return prompt
@@ -115,7 +125,7 @@ def main():
 			system_prompt_metadata_describer,
 			metadata_prompt,
 		)
-		print(description_agent_prompt)
+		print(f"{description_agent_prompt}")
 		agent1_output = run_mistral_prompt(
 			bedrock_runtime = bedrock_runtime,
 			prompt          = description_agent_prompt,
@@ -134,12 +144,13 @@ def main():
 		system_prompt_table_joiner,
 		tabling_prompt,
 	)
-	print(f"\n\n{tablejoiner_agent_prompt=}")
-	agent2_output = run_mistral_prompt(
-		bedrock_runtime = bedrock_runtime,
-		prompt          = tablejoiner_agent_prompt,
-	)
-	print(agent2_output)
+
+	# print(f"\n\n{tablejoiner_agent_prompt=}")
+	# agent2_output = run_mistral_prompt(
+	# 	bedrock_runtime = bedrock_runtime,
+	# 	prompt          = tablejoiner_agent_prompt,
+	# )
+	# print(f"\n\n{agent2_output=}")
 
 	agent1_output_folded = ",".join(agent1_outputs)
 	combo_columns_prompt = render_columns_dependencies_prompts(agent1_output_folded)
@@ -154,7 +165,7 @@ def main():
 	)
 
 	print(f"\n\n{agent3_output=}")
-	agent3_output_fixed = agent3_output[agent3_output.find('['):]
+	agent3_output_fixed = extract_by_symbol(agent3_output, ('[',']'))
 	print(f"\n\n{agent3_output_fixed=}")
 	# agent3_output_fixed = run_mistral_prompt(
 	# 	bedrock_runtime = bedrock_runtime,
@@ -174,6 +185,7 @@ def main():
 			bedrock_runtime = bedrock_runtime,
 			prompt          = agent4_input,
 		)
+		sql_query = extract_by_symbol(sql_query, ('```','```'))
 		result.append(sql_query)
 	
 	return result
@@ -183,4 +195,4 @@ if __name__ == "__main__":
 	results = main()
 	print(f"SQL results:\n")
 	for sql_query in results:
-		print(f"{sql_query}")
+		print(f"{sql_query}\n\n")

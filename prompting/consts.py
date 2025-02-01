@@ -1,13 +1,13 @@
 DEFAULT_CSVS = {
-	"../../veolia-data-abonnements.csv" : "This dataset contains contract information about water utility clients",
-	"../../veolia-data-factures.csv"    : "This dataset contains billing information about water utility clients",
-	"../../veolia-data-consos.csv"      : "This dataset contains consumption information about water utility clients",
+	"../../veolia-data-abonnements.csv" : "name: abonnements; description: this dataset contains contract information about water utility clients",
+	"../../veolia-data-factures.csv"    : "name: factures; description: this dataset contains billing information about water utility clients",
+	"../../veolia-data-consos.csv"      : "name: conso; description: this dataset contains consumption information about water utility clients",
 }
 DEFAULT_MISTRAL_MODEL = "mistral.mixtral-8x7b-instruct-v0:1"
 DEFAULT_MAX_TOKENS    = 4096
-DEFAULT_TEMPERATURE   = 0.5
-DEFAULT_TOP_P         = 0.9
-DEFAULT_TOP_K         = 50
+DEFAULT_TEMPERATURE   = 0.5  # 0.3
+DEFAULT_TOP_P         = 0.9  # 0.6
+DEFAULT_TOP_K         = 50   # 10
 
 system_prompt_common = "You are a helpful assistant designed for data science process automation. Your primary function is to assist with data cleaning, feature engineering, and metadata management. You should always provide clear and actionable suggestions, and you should avoid making assumptions or hallucinating data. "
 

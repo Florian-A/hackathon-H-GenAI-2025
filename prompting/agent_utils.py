@@ -14,7 +14,7 @@ def combine_prompts(
 	human_prompt  : str,
 ) -> str:
 	result = "System: " + system_prompt_common + system_prompt + "\n" + "Human: " + human_prompt
-	return result.replace('\n', ' ').replace('\t', ' ').replace('  ', ' ').replace("\"", "`")
+	return result.replace('\n', ' ').replace('\t', ' ').replace('  ', ' ').replace("\"", "\\\"")  # .replace("'", "\\'")
 
 
 def run_mistral_prompt(
