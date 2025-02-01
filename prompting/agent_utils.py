@@ -6,6 +6,8 @@ import pandas as pd
 import boto3
 import botocore
 
+import anthropic
+
 from consts import *
 
 
@@ -38,6 +40,35 @@ def run_mistral_prompt(
 	# mistral_parse_text = mistral_parse_text.replace('\n', ' ')
 	mistral7b_output   = mistral_parse_text.strip()
 	return mistral7b_output
+
+def run_claude_prompt(
+	bedrock_runtime : botocore.client,
+	prompt          : str,
+	model_id        : str   = DEFAULT_CLAUDE_MODEL,
+	max_tokens      : int   = DEFAULT_MAX_TOKENS,
+	temperature     : float = DEFAULT_TEMPERATURE,
+	top_p           : float = DEFAULT_TOP_P,
+	top_k           : int   = DEFAULT_TOP_K
+) -> str:
+	message_body = json.dumps({
+		"anthropic_version": "bedrock-2023-05-31",
+		"max_tokens": max_tokens,
+		"temperature": temperature,
+		"messages": [
+			{"role": "user", "content": prompt}
+		]
+	})
+	response        = bedrock_runtime.invoke_model(
+		body        = message_body,
+		modelId     = model_id,
+		accept      = "application/json",
+		contentType = "application/json",
+	)
+	response_output    = json.loads(response.get('body').read())
+	anthropic_parse_text = response_output['content'][0]['text']
+	# mistral_parse_text = mistral_parse_text.replace('\n', ' ')
+	anthropic_output   = anthropic_parse_text.strip()
+	return anthropic_output
 
 
 def lambda_handler(event, context):

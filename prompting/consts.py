@@ -4,6 +4,7 @@ DEFAULT_CSVS = {
 	"../../veolia-data-consos.csv"      : "name: conso; description: this dataset contains consumption information about water utility clients",
 }
 DEFAULT_MISTRAL_MODEL = "mistral.mixtral-8x7b-instruct-v0:1"
+DEFAULT_CLAUDE_MODEL  = "anthropic.claude-3-5-sonnet-20241022-v2:0"
 DEFAULT_MAX_TOKENS    = 4096
 DEFAULT_TEMPERATURE   = 0.5  # 0.3
 DEFAULT_TOP_P         = 0.9  # 0.6

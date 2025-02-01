@@ -115,6 +115,8 @@ def parse_agent3_output(agent3_output : str) -> List:
 def main():
 	# bedrock         = boto3.client(service_name="bedrock",         region_name='us-west-2')
 	bedrock_runtime = boto3.client(service_name = "bedrock-runtime", region_name='us-west-2')
+
+	# Agent 1: get table metadata
 	agent1_outputs  = []
 	for csv, desc in DEFAULT_CSVS.items():
 		metadata_prompt = render_from_df__human_prompt_metadata_describer(
@@ -126,32 +128,33 @@ def main():
 			metadata_prompt,
 		)
 		print(f"{description_agent_prompt}")
-		agent1_output = run_mistral_prompt(
+		agent1_output = run_claude_prompt(
 			bedrock_runtime = bedrock_runtime,
 			prompt          = description_agent_prompt,
 		)
 		print(f"{agent1_output}")
 		agent1_outputs.append(agent1_output)
 
-	agent2_inputs = {
-		filename: agent1_output
-		for filename, agent1_output in zip(DEFAULT_CSVS, agent1_outputs)
-	}
-	tabling_prompt = render_from_metadata__human_prompt_table_joiner(
-		tables_metadata = agent2_inputs,
-	)
-	tablejoiner_agent_prompt = combine_prompts(
-		system_prompt_table_joiner,
-		tabling_prompt,
-	)
-
+	# # Agent 2: get table join candidates
+	# agent2_inputs = {
+	# 	filename: agent1_output
+	# 	for filename, agent1_output in zip(DEFAULT_CSVS, agent1_outputs)
+	# }
+	# tabling_prompt = render_from_metadata__human_prompt_table_joiner(
+	# 	tables_metadata = agent2_inputs,
+	# )
+	# tablejoiner_agent_prompt = combine_prompts(
+	# 	system_prompt_table_joiner,
+	# 	tabling_prompt,
+	# )
 	# print(f"\n\n{tablejoiner_agent_prompt=}")
-	# agent2_output = run_mistral_prompt(
+	# agent2_output = run_claude_prompt(
 	# 	bedrock_runtime = bedrock_runtime,
 	# 	prompt          = tablejoiner_agent_prompt,
 	# )
 	# print(f"\n\n{agent2_output=}")
 
+	# Agent 3: get columns dependencies candidates
 	agent1_output_folded = ",".join(agent1_outputs)
 	combo_columns_prompt = render_columns_dependencies_prompts(agent1_output_folded)
 	agent3_input = combine_prompts(
@@ -159,15 +162,17 @@ def main():
 		combo_columns_prompt,
 	)
 	print(f"\n\n{agent3_input=}")
-	agent3_output = run_mistral_prompt(
+	agent3_output = run_claude_prompt(
 		bedrock_runtime = bedrock_runtime,
 		prompt          = agent3_input,
 	)
 
+
+	# Agent 4: get SQL queries
 	print(f"\n\n{agent3_output=}")
 	agent3_output_fixed = extract_by_symbol(agent3_output, ('[',']'))
 	print(f"\n\n{agent3_output_fixed=}")
-	# agent3_output_fixed = run_mistral_prompt(
+	# agent3_output_fixed = run_claude_prompt(
 	# 	bedrock_runtime = bedrock_runtime,
 	# 	prompt          = "This JSON is invalid, please fix it: " + agent3_output_fixed,
 	# )
@@ -181,11 +186,12 @@ def main():
 			agent_sql_prompt,
 		)
 		print(f"\n\n{agent4_input=}")
-		sql_query = run_mistral_prompt(
+		sql_query = run_claude_prompt(
 			bedrock_runtime = bedrock_runtime,
 			prompt          = agent4_input,
 		)
-		sql_query = extract_by_symbol(sql_query, ('```','```'))
+		if '```' in sql_query:
+			sql_query = extract_by_symbol(sql_query, ('```','```'))
 		result.append(sql_query)
 	
 	return result
