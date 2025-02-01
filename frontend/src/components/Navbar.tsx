@@ -29,13 +29,13 @@ function Navbar() {
                                     to="/"
                                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${isActive('/')}`}
                                 >
-                                    Tab Inputs
+                                    Tables
                                 </Link>
                                 <Link
                                     to="/resultats"
                                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${isActive('/resultats')}`}
                                 >
-                                    Resultats
+                                    Requêtes
                                 </Link>
                             </div>
                         </div>
