@@ -3,10 +3,10 @@ import json
 import os
 
 # Variables d'environnement à définir dans AWS Lambda
-DB_HOST = os.getenv("DB_HOST", "secret")
-DB_USER = os.getenv("DB_USER", "secret")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "secret")
-DB_NAME = os.getenv("DB_NAME", "secret")  # Correction : définition explicite du nom de la DB
+DB_HOST = os.environ['DB_HOST']
+DB_USER = os.environ['DB_USER']
+DB_PASSWORD = os.environ['DB_PASSWORD']
+DB_NAME = "h-gen-ai-database"  # Correction : définition explicite du nom de la DB
 
 def lambda_handler(event, context):
     try:
