@@ -15,6 +15,12 @@ export default defineConfig(({ command }) => ({
         target: PROD_API_URL,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            // Ajout des headers CORS nécessaires
+            proxyReq.setHeader('Origin', PROD_API_URL);
+          });
+        },
       },
     },
   },
@@ -27,7 +33,6 @@ export default defineConfig(({ command }) => ({
     },
   },
   define: {
-    // En production, on remplace /api par l'URL complète
     'process.env.API_BASE_URL': command === 'serve' 
       ? JSON.stringify('/api')
       : JSON.stringify(PROD_API_URL)

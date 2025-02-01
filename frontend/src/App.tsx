@@ -7,6 +7,14 @@ const API_URL = process.env.API_BASE_URL || '';
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 
+// Configuration Axios avec les headers CORS
+const axiosInstance = axios.create({
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  }
+});
+
 function App() {
   const [controls, setControls] = useState<Control[]>([]);
   const [editedQueries, setEditedQueries] = useState<{ [key: number]: string }>({});
@@ -17,7 +25,7 @@ function App() {
   const fetchWithRetry = async (retries: number = 0): Promise<Control[]> => {
     try {
       const url = API_URL.endsWith('/') ? API_URL : `${API_URL}/`;
-      const response = await axios.get(url);
+      const response = await axiosInstance.get(url);
       return response.data;
     } catch (err) {
       if (retries < MAX_RETRIES) {
@@ -43,7 +51,6 @@ function App() {
           ? `Erreur de connexion: ${err.message}` 
           : "Erreur lors du chargement des contrôles. Veuillez vérifier votre connexion et réessayer.";
         setError(errorMessage);
-        // Log uniquement le message d'erreur et le statut si disponible
         if (axios.isAxiosError(err)) {
           console.error('Error fetching controls:', {
             message: err.message,
@@ -70,7 +77,7 @@ function App() {
     setLoading(prev => ({ ...prev, [controlId]: true }));
     try {
       const url = API_URL.endsWith('/') ? API_URL : `${API_URL}/`;
-      const response = await axios.post(url, {
+      const response = await axiosInstance.post(url, {
         id: controlId,
         sql: editedQueries[controlId]
       });
