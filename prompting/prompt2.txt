@@ -1,0 +1,10 @@
+I want you to find the correlation between the tables and between the columns.
+Your role is to return me a list of columns that should be correlated, or equal.
+I expect from you a json format that should look like:
+[
+{
+"candidate_feature_combo": ["taille_du_batiment","releve1","releve2"],
+"reason_why_it_is_a_candidate": "reason..."
+},
+...
+]
