@@ -2,63 +2,80 @@
 
 Cette application web permet de visualiser et d'analyser les données des tables Veolia. Elle offre une interface intuitive pour explorer la structure des tables et exécuter des requêtes SQL personnalisées.
 
-## Site déployé
+---
 
-https://main.d19w83t957c0c1.amplifyapp.com/
+## 🚀 Site Déployé
 
-## Fonctionnalités
+🔗 [Accéder à l'application](https://main.d19w83t957c0c1.amplifyapp.com/)
 
-### 1. Exploration des Tables
+---
+
+## 📌 Fonctionnalités
+
+### 🔍 Exploration des Tables
 - Visualisation de la liste des tables disponibles
 - Sélection multiple de tables
 - Affichage détaillé de la structure de chaque table
 - Analyse des colonnes avec leurs descriptions
 
-### 2. Requêtes SQL
+### 📝 Requêtes SQL
 - Interface dédiée pour l'exécution de requêtes SQL
 - Édition de requêtes avec prévisualisation
 - Affichage des résultats en temps réel
 - Gestion des erreurs d'exécution
 
-## Technologies Utilisées
+---
 
-- **Frontend**
-  - React
-  - TypeScript
-  - Tailwind CSS
-  - Axios pour les requêtes HTTP
-  - React Router pour la navigation
-  - Vite comme bundler
+## 🛠️ Technologies Utilisées
 
-- **Backend**
-  - AWS Lambda + Python 3.13
-  - AWS Redshift
-  - AWS Amplify
-  - Au choix Mixtral 8x7B ou Claude Sonnet 3.5 pour les agents prompteurs
+### **Frontend**
+- React
+- TypeScript
+- Tailwind CSS
+- Axios (requêtes HTTP)
+- React Router (navigation)
+- Vite (bundler)
 
-## Structure du Projet 
+### **Backend**
+- AWS Lambda + Python 3.13
+- AWS Redshift
+- AWS Amplify
+- Agents prompteurs : Mixtral 8x7B ou Claude Sonnet 3.5
 
-- `draft/` : Contient les expérimentations initiales de l'application
-  - `prompting/` : un logiciel python qui nous a servi de base pour construire nos agents prompteurs et travailler la qualité de notre pipeline de *prompt chaining* (mise dans des lambdas AWS par la suite)
-  - `sql/` : différentes commandes SQL utilisées pour comprendre le dataset et évaluer la pertinence des prompts produits par nos agents
-- `frontend/` : contient la webapp qui sert d'interface frontend à l'application, et ce que les expert data voient. C'est une app Vite + React + TS.
-- `infra/` : contient uniquement:
-  - `step_function.json`: le fichier de configuration de notre pipeline sur AWS
-  - `template.yaml`: permet de déployer Bedrock, Redshift et Amplify
-- `lambdas/` : le dossier contenant le code de nos différentes lambdas; pour chacune, on a un fichier `.yaml` permettant de la déployer.
-  - `frontEndEndpoint/` : monolithe pour faire tourner certains agents prompteurs
-  - `execSQLData/` : exécute une requête SQL générée
-  - `getAllColumn/` : renvoie l'ensemble des noms de colonnes pour le front
-  - `getAllPipelineOutput/` : renvoie les requêtes SQL générées et des tests à faire
-  - `getDescribeAllTable/` : renvoie la structure des tables pour l'affichage
-  - `humanLoop/` : permet d'itérer sur une requêtes SQL pour la raffiner 
-  - `nonNullControl/` : permet de vérifier s'il y a des nulls dans une feature spécifique
- 
-## Architecture Fonctionelle
+---
+
+## 📂 Structure du Projet
+
+```
+draft/          # Expérimentations initiales de l'application
+│── prompting/  # Base des agents prompteurs et pipeline de *prompt chaining*
+│── sql/        # Commandes SQL pour analyser le dataset et évaluer les prompts
+
+frontend/       # Webapp (Vite + React + TypeScript)
+
+infra/          # Fichiers de configuration pour l'infrastructure AWS
+│── step_function.json  # Configuration du pipeline AWS
+│── template.yaml       # Déploiement de Bedrock, Redshift et Amplify
+
+lambdas/        # Code des différentes fonctions AWS Lambda
+│── frontEndEndpoint/       # Monolithe pour exécuter certains agents prompteurs
+│── execSQLData/           # Exécution des requêtes SQL générées
+│── getAllColumn/          # Récupération des noms de colonnes pour le frontend
+│── getAllPipelineOutput/  # Renvoi des requêtes SQL générées et tests associés
+│── getDescribeAllTable/   # Récupération de la structure des tables
+│── humanLoop/             # Itération sur les requêtes SQL pour affinement
+│── nonNullControl/        # Vérification des valeurs nulles dans une feature
+```
+
+---
+
+## 🏗️ Architecture Fonctionnelle
 
 ![AWS drawio](https://github.com/user-attachments/assets/ef1eb050-811a-4642-9326-a07fc1c9bbc7)
 
-### Démonstration :
+---
 
-<img src="./img/video1.gif" />
+## 🎥 Démonstration
+
+![Demo](./img/video1.gif)
 
