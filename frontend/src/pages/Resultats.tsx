@@ -11,7 +11,7 @@ const API_URL = import.meta.env.DEV
   ? '/api/controls'
   : process.env.CONTROLS_API_URL;
 
-const SQL_EXECUTION_URL = import.meta.env.DEV 
+const SQL_EXEC_API_URL = import.meta.env.DEV 
   ? '/api/sql-exec'
   : process.env.SQL_EXEC_API_URL;
 
