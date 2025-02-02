@@ -148,9 +148,9 @@ def lambda_handler(event, context):
 		dc["control_tables"] = ""
 		res.append(dc)
 		hds_writer(
-			control_name = dc["control_name"],
-			control_description = dc["control_name"],
-			control_tables = dc["control_name"],
-			control_sql = dc["control_name"]
+			control_name = dc["control_name"].upper(),
+			control_description = dc["control_description"].upper(),
+			control_tables = dc["control_tables"],
+			control_sql = dc["control_sql"]
 		)
 	return res
