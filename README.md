@@ -54,7 +54,7 @@ https://main.d19w83t957c0c1.amplifyapp.com/
   - `humanLoop/` : permet d'itérer sur une requêtes SQL pour la raffiner 
   - `nonNullControl/` : permet de vérifier s'il y a des nulls dans une feature spécifique
  
-## Architectre Fonctionelle
+## Architecture Fonctionelle
 
 ![AWS drawio](https://github.com/user-attachments/assets/ef1eb050-811a-4642-9326-a07fc1c9bbc7)
 
