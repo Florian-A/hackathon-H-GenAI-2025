@@ -32,6 +32,12 @@ function Navbar() {
                                     Tables
                                 </Link>
                                 <Link
+                                    to="/analysis"
+                                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${isActive('/analysis')}`}
+                                >
+                                    Analyse
+                                </Link>
+                                <Link
                                     to="/resultats"
                                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${isActive('/resultats')}`}
                                 >

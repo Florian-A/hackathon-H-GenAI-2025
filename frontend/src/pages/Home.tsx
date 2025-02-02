@@ -64,7 +64,7 @@ function Home() {
   useEffect(() => {
     const fetchTables = async () => {
       try {
-        const apiUrl = import.meta.env.DEV 
+        const apiUrl = import.meta.env.DEV
           ? '/api/structure'
           : process.env.STRUCTURE_API_URL;
         const response = await axios.get(apiUrl);
@@ -76,7 +76,7 @@ function Home() {
         setLoading(false);
       }
     };
-  
+
     fetchTables();
   }, []);
 
@@ -111,8 +111,8 @@ function Home() {
       }));
     });
 
-    setAnalysisResults(selectedColumns);
-    setDisplayedTable(null);
+    localStorage.setItem('columnAnalysis', JSON.stringify(selectedColumns));
+    navigate('/analysis');
     setAnalyzing(false);
   };
 

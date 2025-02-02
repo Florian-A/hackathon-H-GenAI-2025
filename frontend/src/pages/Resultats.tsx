@@ -5,13 +5,15 @@ import { Control } from '../types';
 import ResultDisplay from '../components/ResultDisplay';
 import SqlQueryCell from '../components/SqlQueryCell';
 import ExecuteButton from '../components/ExecuteButton';
+import RefineModal from '../components/RefineModal';
+import RefineButton from '../components/RefineButton';
 
 // Mettre à jour la constante API_URL
-const API_URL = import.meta.env.DEV 
+const API_URL = import.meta.env.DEV
   ? '/api/controls'
   : process.env.CONTROLS_API_URL;
 
-const SQL_EXEC_API_URL = import.meta.env.DEV 
+const SQL_EXEC_API_URL = import.meta.env.DEV
   ? '/api/sql-exec'
   : process.env.SQL_EXEC_API_URL;
 
@@ -26,6 +28,8 @@ export default function Resultats() {
   const [loading, setLoading] = useState<{ [key: number]: boolean }>({});
   const [error, setError] = useState<string | null>(null);
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
+  const [isRefineModalOpen, setIsRefineModalOpen] = useState(false);
+  const [selectedQueryId, setSelectedQueryId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchControls = async () => {
@@ -80,6 +84,13 @@ export default function Resultats() {
     }
   };
 
+  const handleRefine = (prompt: string) => {
+    if (!selectedQueryId) return;
+
+    // Ici vous pouvez implémenter la logique pour affiner la requête
+    console.log(`Refining query ${selectedQueryId} with prompt: ${prompt}`);
+  };
+
   if (error) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center p-4">
@@ -111,7 +122,7 @@ export default function Resultats() {
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Fonction</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Description</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[30%]">Requête SQL</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[25%]">Requête SQL</th>
                   <th className="px-4 py-2 text-center text-sm font-semibold text-black w-16">Actions</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black flex-1">Résultats</th>
                 </tr>
@@ -120,20 +131,18 @@ export default function Resultats() {
                 {controls.map(control => (
                   <tr
                     key={control.id}
-                    className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 ${selectedRow === control.id ? 'bg-gray-50' : ''
-                      }`}
+                    className={`hover:bg-gray-50 cursor-pointer transition-all duration-200 ${selectedRow === control.id ? 'bg-gray-50' : ''}`}
                     onClick={() => setSelectedRow(selectedRow === control.id ? null : control.id)}
                   >
                     <td className="px-4 py-2 text-sm font-medium text-black truncate">
                       {control.control_name}
                     </td>
-                    <td className="px-4 py-2 text-sm text-gray-600">
-                      <div className="truncate max-w-[25rem]" title={control.control_description}>
+                    <td className="px-4 py-2 text-sm text-gray-600 break-words">
+                      <div className="max-w-[25rem]" title={control.control_description}>
                         {control.control_description}
                       </div>
                     </td>
-                    <td className={`px-4 py-2 transition-all duration-200 ${selectedRow === control.id ? 'py-4' : ''
-                      }`}>
+                    <td className={`px-4 py-2 w-[25%] transition-all duration-200 ${selectedRow === control.id ? 'py-4' : ''}`}>
                       <SqlQueryCell
                         value={editedQueries[control.id]}
                         onChange={(value) => setEditedQueries(prev => ({
@@ -144,13 +153,20 @@ export default function Resultats() {
                       />
                     </td>
                     <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
-                      <ExecuteButton
-                        onClick={() => executeQuery(control.id)}
-                        loading={loading[control.id]}
-                      />
+                      <div className="space-y-2">
+                        <ExecuteButton
+                          onClick={() => executeQuery(control.id)}
+                          loading={loading[control.id]}
+                        />
+                        <RefineButton
+                          onClick={() => {
+                            setSelectedQueryId(control.id);
+                            setIsRefineModalOpen(true);
+                          }}
+                        />
+                      </div>
                     </td>
-                    <td className={`px-4 py-2 transition-all duration-200 ${selectedRow === control.id ? 'py-4' : ''
-                      }`}>
+                    <td className={`px-4 py-2 transition-all duration-200 ${selectedRow === control.id ? 'py-4' : ''}`}>
                       {results[control.id] && (
                         <ResultDisplay
                           data={results[control.id].data}
@@ -167,6 +183,15 @@ export default function Resultats() {
           </div>
         </div>
       </div>
+
+      <RefineModal
+        isOpen={isRefineModalOpen}
+        onClose={() => {
+          setIsRefineModalOpen(false);
+          setSelectedQueryId(null);
+        }}
+        onSubmit={handleRefine}
+      />
     </div>
   );
 }

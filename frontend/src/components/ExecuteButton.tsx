@@ -1,4 +1,4 @@
-import { Play } from 'lucide-react';
+import { Play, Loader2 } from 'lucide-react';
 
 interface ExecuteButtonProps {
     onClick: () => void;
@@ -10,10 +10,14 @@ function ExecuteButton({ onClick, loading }: ExecuteButtonProps) {
         <button
             onClick={onClick}
             disabled={loading}
-            className="flex items-center gap-1 px-3 py-1.5 bg-black text-white text-xs rounded hover:bg-gray-800 transition-colors disabled:opacity-50 w-full justify-center"
+            className="w-full flex items-center justify-center gap-1.5 px-2 py-1 text-white bg-[#EE2737] hover:bg-red-700 rounded transition-colors border border-[#EE2737] disabled:opacity-50 disabled:cursor-not-allowed"
         >
-            <Play className="w-3 h-3" />
-            {loading ? 'Exécution...' : 'Exécuter'}
+            {loading ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+                <Play className="w-3.5 h-3.5" />
+            )}
+            <span className="text-xs">Execute</span>
         </button>
     );
 }
