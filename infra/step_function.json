@@ -1,0 +1,264 @@
+{
+    "Resources": {
+        "StateMachine88b6493c": {
+            "Type": "AWS::StepFunctions::StateMachine",
+            "Properties": {
+                "Definition": {
+                    "QueryLanguage": "JSONata",
+                    "Comment": "A description of my state machine",
+                    "StartAt": "Parallel",
+                    "States": {
+                        "Parallel": {
+                            "Type": "Parallel",
+                            "Branches": [
+                                {
+                                    "StartAt": "Map (1)",
+                                    "States": {
+                                        "Map (1)": {
+                                            "Type": "Map",
+                                            "ItemProcessor": {
+                                                "ProcessorConfig": {
+                                                    "Mode": "INLINE"
+                                                },
+                                                "StartAt": "Récupérer les colonnes",
+                                                "States": {
+                                                    "Récupérer les colonnes": {
+                                                        "Type": "Task",
+                                                        "Resource": "arn:aws:states:::lambda:invoke",
+                                                        "Output": "{% $states.result.Payload %}",
+                                                        "Arguments": {
+                                                            "FunctionName": "${lambdainvoke_FunctionName_eff282d1}",
+                                                            "Payload": "{% $states.input %}"
+                                                        },
+                                                        "Retry": [
+                                                            {
+                                                                "ErrorEquals": [
+                                                                    "Lambda.ServiceException",
+                                                                    "Lambda.AWSLambdaException",
+                                                                    "Lambda.SdkClientException",
+                                                                    "Lambda.TooManyRequestsException"
+                                                                ],
+                                                                "IntervalSeconds": 1,
+                                                                "MaxAttempts": 3,
+                                                                "BackoffRate": 2,
+                                                                "JitterStrategy": "FULL"
+                                                            }
+                                                        ],
+                                                        "Next": "Map"
+                                                    },
+                                                    "Map": {
+                                                        "Type": "Map",
+                                                        "ItemProcessor": {
+                                                            "ProcessorConfig": {
+                                                                "Mode": "INLINE"
+                                                            },
+                                                            "StartAt": "Récupérer le SQL pour colonnes non vides",
+                                                            "States": {
+                                                                "Récupérer le SQL pour colonnes non vides": {
+                                                                    "Type": "Task",
+                                                                    "Resource": "arn:aws:states:::lambda:invoke",
+                                                                    "Output": "{% $states.result.Payload %}",
+                                                                    "Arguments": {
+                                                                        "FunctionName": "${lambdainvoke_FunctionName_7081d563}",
+                                                                        "Payload": "{% $states.input %}"
+                                                                    },
+                                                                    "Retry": [
+                                                                        {
+                                                                            "ErrorEquals": [
+                                                                                "Lambda.ServiceException",
+                                                                                "Lambda.AWSLambdaException",
+                                                                                "Lambda.SdkClientException",
+                                                                                "Lambda.TooManyRequestsException"
+                                                                            ],
+                                                                            "IntervalSeconds": 1,
+                                                                            "MaxAttempts": 3,
+                                                                            "BackoffRate": 2,
+                                                                            "JitterStrategy": "FULL"
+                                                                        }
+                                                                    ],
+                                                                    "Next": "Ajout dans la table finale"
+                                                                },
+                                                                "Ajout dans la table finale": {
+                                                                    "Type": "Task",
+                                                                    "Resource": "arn:aws:states:::lambda:invoke",
+                                                                    "Output": "{% $states.result.Payload %}",
+                                                                    "Arguments": {
+                                                                        "FunctionName": "${lambdainvoke_FunctionName_debacf9f}",
+                                                                        "Payload": "{% $states.input %}"
+                                                                    },
+                                                                    "Retry": [
+                                                                        {
+                                                                            "ErrorEquals": [
+                                                                                "Lambda.ServiceException",
+                                                                                "Lambda.AWSLambdaException",
+                                                                                "Lambda.SdkClientException",
+                                                                                "Lambda.TooManyRequestsException"
+                                                                            ],
+                                                                            "IntervalSeconds": 1,
+                                                                            "MaxAttempts": 3,
+                                                                            "BackoffRate": 2,
+                                                                            "JitterStrategy": "FULL"
+                                                                        }
+                                                                    ],
+                                                                    "End": true
+                                                                }
+                                                            }
+                                                        },
+                                                        "End": true
+                                                    }
+                                                }
+                                            },
+                                            "Items": [
+                                                {
+                                                    "table_name": "abonnements"
+                                                },
+                                                {
+                                                    "table_name": "conso"
+                                                },
+                                                {
+                                                    "table_name": "factures"
+                                                }
+                                            ],
+                                            "End": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "StartAt": "get sql queries",
+                                    "States": {
+                                        "get sql queries": {
+                                            "Type": "Task",
+                                            "Resource": "arn:aws:states:::lambda:invoke",
+                                            "Output": "{% $states.result.Payload %}",
+                                            "Arguments": {
+                                                "FunctionName": "${lambdainvoke_FunctionName_6b137d9d}",
+                                                "Payload": "{% $states.input %}"
+                                            },
+                                            "Retry": [
+                                                {
+                                                    "ErrorEquals": [
+                                                        "Lambda.ServiceException",
+                                                        "Lambda.AWSLambdaException",
+                                                        "Lambda.SdkClientException",
+                                                        "Lambda.TooManyRequestsException"
+                                                    ],
+                                                    "IntervalSeconds": 1,
+                                                    "MaxAttempts": 3,
+                                                    "BackoffRate": 2,
+                                                    "JitterStrategy": "FULL"
+                                                }
+                                            ],
+                                            "End": true
+                                        }
+                                    }
+                                }
+                            ],
+                            "End": true
+                        }
+                    }
+                },
+                "DefinitionSubstitutions": {
+                    "lambdainvoke_FunctionName_eff282d1": "arn:aws:lambda:us-west-2:423623833509:function:getAllColumn:$LATEST",
+                    "lambdainvoke_FunctionName_7081d563": "arn:aws:lambda:us-west-2:423623833509:function:non_null_control:$LATEST",
+                    "lambdainvoke_FunctionName_debacf9f": "arn:aws:lambda:us-west-2:423623833509:function:SaveSQLinRDS:$LATEST",
+                    "lambdainvoke_FunctionName_6b137d9d": "arn:aws:lambda:us-west-2:423623833509:function:frontEndEndpoint:$LATEST"
+                },
+                "RoleArn": {
+                    "Fn::GetAtt": [
+                        "Role49048831",
+                        "Arn"
+                    ]
+                },
+                "StateMachineName": "StateMachine88b6493c",
+                "StateMachineType": "STANDARD",
+                "EncryptionConfiguration": {
+                    "Type": "AWS_OWNED_KEY"
+                },
+                "LoggingConfiguration": {
+                    "Level": "OFF",
+                    "IncludeExecutionData": false
+                }
+            }
+        },
+        "Role49048831": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": "StepFunctions_IAM_ROLE_MyStateMachine-iatukx36ic8a6e925",
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "states.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "MaxSessionDuration": 3600,
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+                ]
+            }
+        },
+        "Policy9087f54f": {
+            "Type": "AWS::IAM::RolePolicy",
+            "Properties": {
+                "PolicyName": "XRayAccessPolicy629bf9a8",
+                "RoleName": {
+                    "Ref": "Role49048831"
+                },
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "xray:PutTraceSegments",
+                                "xray:PutTelemetryRecords",
+                                "xray:GetSamplingRules",
+                                "xray:GetSamplingTargets"
+                            ],
+                            "Resource": [
+                                "*"
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "Policy35270bc8": {
+            "Type": "AWS::IAM::RolePolicy",
+            "Properties": {
+                "PolicyName": "LambdaInvokeScopedAccessPolicycc221f8b",
+                "RoleName": {
+                    "Ref": "Role49048831"
+                },
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "lambda:InvokeFunction"
+                            ],
+                            "Resource": [
+                                "arn:aws:lambda:us-west-2:423623833509:function:non_null_control:*"
+                            ]
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "lambda:InvokeFunction"
+                            ],
+                            "Resource": [
+                                "arn:aws:lambda:us-west-2:423623833509:function:non_null_control"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

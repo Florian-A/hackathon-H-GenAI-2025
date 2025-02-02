@@ -3,20 +3,20 @@ import json
 import os
 
 # Variables d'environnement à définir dans AWS Lambda
-DB_HOST = os.environ['DB_HOST']
-DB_USER = os.environ['DB_USER']
+DB_HOST     = os.environ['DB_HOST']
+DB_USER     = os.environ['DB_USER']
 DB_PASSWORD = os.environ['DB_PASSWORD']
-DB_NAME = "h-gen-ai-database"  # Spécification explicite de la base de données
+DB_NAME     = "h-gen-ai-database"  # Spécification explicite de la base de données
 
 def lambda_handler(event, context):
     try:
         # Connexion à MySQL
         connection = pymysql.connect(
-            host=DB_HOST,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            database=DB_NAME,
-            cursorclass=pymysql.cursors.DictCursor
+            host        = DB_HOST,
+            user        = DB_USER,
+            password    = DB_PASSWORD,
+            database    = DB_NAME,
+            cursorclass = pymysql.cursors.DictCursor
         )
 
         with connection.cursor() as cursor:
