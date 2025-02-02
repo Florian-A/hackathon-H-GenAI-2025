@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.19)  2 FEB 2025 11:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.19)  2 FEB 2025 11:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1066,31 +1066,31 @@ t line 128.
  [6
 
 ]
-File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
-<use Design_sans_titre-3-removebg-preview.png>
-Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
-t line 140.
-(pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
- [7
-
-]
-<archi_AWS.drawio.png, id=245, 1643.13875pt x 854.19125pt>
+<archi_AWS.drawio.png, id=219, 1643.13875pt x 854.19125pt>
 File: archi_AWS.drawio.png Graphic file (type png)
 <use archi_AWS.drawio.png>
-Package pdftex.def Info: archi_AWS.drawio.png  used on input line 148.
+Package pdftex.def Info: archi_AWS.drawio.png  used on input line 137.
 (pdftex.def)             Requested size: 328.37122pt x 170.71652pt.
 File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
 <use Design_sans_titre-3-removebg-preview.png>
 Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
-t line 148.
+t line 137.
 (pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
- [8
+ [7
 
  <./archi_AWS.drawio.png>]
 File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
 <use Design_sans_titre-3-removebg-preview.png>
 Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
-t line 158.
+t line 146.
+(pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
+ [8
+
+]
+File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
+<use Design_sans_titre-3-removebg-preview.png>
+Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
+t line 154.
 (pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
  [9
 
@@ -1109,8 +1109,15 @@ t line 158.
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-03-14>
  ***********
-Package rerunfilecheck Info: File `pres.out' has not changed.
-(rerunfilecheck)             Checksum: 37CB888871403FD8C37B01B17403C0CB;1277.
+
+
+Package rerunfilecheck Warning: File `pres.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `pres.out':
+(rerunfilecheck)             Before: 37CB888871403FD8C37B01B17403C0CB;1277
+(rerunfilecheck)             After:  59B99D77000A61C751E5E52D0858CE7D;1277.
  ) 
 Here is how much of TeX's memory you used:
  25435 strings out of 474104
@@ -1124,8 +1131,7 @@ Here is how much of TeX's memory you used:
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb>
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-
-Output written on pres.pdf (9 pages, 1652874 bytes).
+Output written on pres.pdf (9 pages, 1652871 bytes).
 PDF statistics:
  324 PDF objects out of 1000 (max. 8388607)
  284 compressed objects within 3 object streams
