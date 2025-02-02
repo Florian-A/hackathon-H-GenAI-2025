@@ -8,6 +8,7 @@ import ExecuteButton from '../components/ExecuteButton';
 
 // Mettre à jour la constante API_URL
 const API_URL = '/api/controls';
+const SQL_EXEC_API_URL = '/api/sql-exec';
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
@@ -54,7 +55,7 @@ export default function Resultats() {
   const executeQuery = async (controlId: number) => {
     setLoading(prev => ({ ...prev, [controlId]: true }));
     try {
-      const response = await axios.post(API_URL, {
+      const response = await axios.post(SQL_EXEC_API_URL, {
         id: controlId,
         sql: editedQueries[controlId]
       });
