@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.19)  2 FEB 2025 11:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.19)  2 FEB 2025 11:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -986,9 +986,9 @@ Dictionary: translator-numbers-dictionary, Language: English
 (/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-theorem-dic
 tionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
-)
-No file pres.nav.
+) (./pres.nav)
 LaTeX Font Info:    Trying to load font information for U+msa on input line 79.
+
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -1006,20 +1006,30 @@ ut line 79.
 File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
 )
-<Design_sans_titre-3-removebg-preview.png, id=27, 668.4975pt x 376.40625pt>
+
+! Package svg Error: File `data_alchemyst.png.svg' is missing.
+
+See the svg package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.79 \end{frame}
+                
+? 
+<Design_sans_titre-3-removebg-preview.png, id=53, 668.4975pt x 376.40625pt>
 File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
 <use Design_sans_titre-3-removebg-preview.png>
 Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
 t line 79.
 (pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
- [1
+[1
 
 {/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./Desig
 n_sans_titre-3-removebg-preview.png>]
 File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
 <use Design_sans_titre-3-removebg-preview.png>
 Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
-t line 88.
+t line 89.
 (pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
  [2
 
@@ -1027,9 +1037,60 @@ t line 88.
 File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
 <use Design_sans_titre-3-removebg-preview.png>
 Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
-t line 96.
+t line 100.
 (pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
  [3
+
+]
+<chrono.png, id=137, 614.295pt x 614.295pt>
+File: chrono.png Graphic file (type png)
+<use chrono.png>
+Package pdftex.def Info: chrono.png  used on input line 110.
+(pdftex.def)             Requested size: 85.35394pt x 85.35826pt.
+File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
+<use Design_sans_titre-3-removebg-preview.png>
+Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
+t line 110.
+(pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
+ [4
+
+ <./chrono.png>]
+File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
+<use Design_sans_titre-3-removebg-preview.png>
+Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
+t line 121.
+(pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
+ [5
+
+]
+File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
+<use Design_sans_titre-3-removebg-preview.png>
+Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
+t line 133.
+(pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
+ [6
+
+]
+<archi_AWS.drawio.png, id=214, 1643.13875pt x 854.19125pt>
+File: archi_AWS.drawio.png Graphic file (type png)
+<use archi_AWS.drawio.png>
+Package pdftex.def Info: archi_AWS.drawio.png  used on input line 140.
+(pdftex.def)             Requested size: 273.63849pt x 142.26378pt.
+File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
+<use Design_sans_titre-3-removebg-preview.png>
+Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
+t line 140.
+(pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
+
+[7
+
+ <./archi_AWS.drawio.png>]
+File: Design_sans_titre-3-removebg-preview.png Graphic file (type png)
+<use Design_sans_titre-3-removebg-preview.png>
+Package pdftex.def Info: Design_sans_titre-3-removebg-preview.png  used on inpu
+t line 150.
+(pdftex.def)             Requested size: 364.2066pt x 273.16609pt.
+ [8
 
 ]
 \tf@nav=\write6
@@ -1046,33 +1107,26 @@ t line 96.
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-03-14>
  ***********
-
-
-Package rerunfilecheck Warning: File `pres.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `pres.out':
-(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
-(rerunfilecheck)             After:  EEF82F5DA79A21B90B6CE8AD1193D0CF;317.
+Package rerunfilecheck Info: File `pres.out' has not changed.
+(rerunfilecheck)             Checksum: 42B4C90EADF7CE88A2206E2448A4516E;1075.
  ) 
 Here is how much of TeX's memory you used:
- 25362 strings out of 474104
- 508853 string characters out of 5743473
- 1937493 words of memory out of 5000000
- 47215 multiletter control sequences out of 15000+600000
+ 25427 strings out of 474104
+ 508916 string characters out of 5743473
+ 1936493 words of memory out of 5000000
+ 47263 multiletter control sequences out of 15000+600000
  565113 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 128i,16n,123p,379b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,14n,123p,379b,565s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb>
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></
-usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><
-/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on pres.pdf (3 pages, 81043 bytes).
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb
+></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+
+Output written on pres.pdf (8 pages, 287363 bytes).
 PDF statistics:
- 145 PDF objects out of 1000 (max. 8388607)
- 110 compressed objects within 2 object streams
- 9 named destinations out of 1000 (max. 500000)
- 84 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 293 PDF objects out of 1000 (max. 8388607)
+ 255 compressed objects within 3 object streams
+ 24 named destinations out of 1000 (max. 500000)
+ 150 words of extra memory for PDF output out of 10000 (max. 10000000)
 

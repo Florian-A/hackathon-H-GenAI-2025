@@ -1,2 +1,7 @@
 \beamer@sectionintoc {1}{Enjeux de la qualité des données}{2}{0}{1}
-\beamer@sectionintoc {2}{Conclusion}{3}{0}{2}
+\beamer@sectionintoc {2}{Les pain points chez Veolia}{3}{0}{2}
+\beamer@sectionintoc {3}{Les pain points chez Veolia}{4}{0}{3}
+\beamer@sectionintoc {4}{Notre solution: Data Alchemyst}{5}{0}{4}
+\beamer@sectionintoc {5}{Impact}{6}{0}{5}
+\beamer@sectionintoc {6}{Architecture}{7}{0}{6}
+\beamer@sectionintoc {7}{Conclusion}{8}{0}{7}

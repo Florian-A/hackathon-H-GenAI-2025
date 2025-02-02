@@ -60,11 +60,11 @@
 %\makeatother
 
 % remove footer
-% \setbeamertemplate{footline}{}
+\setbeamertemplate{footline}{}
 
 
 % Logo inclusion
-% \titlegraphic{\includesvg[height=1cm]{assets/logo.svg}}
+\titlegraphic{\includesvg[height=3cm]{data_alchemyst.png}}
 
 % Title and metadata
 \title{Projet Data Alchemyst}
@@ -83,16 +83,70 @@
 \begin{frame}{Enjeux de la qualité des données}
 	\vspace*{-1cm}
 	\begin{itemize}
-		\item 
+		\item Prise de décision impactée
+		\item Facturation automatique en 2026
 	\end{itemize}
 \end{frame}
+
+
+\section{Les pain points chez Veolia}
+\begin{frame}{Les pain points chez Veolia}
+	\vspace*{-1cm}
+	\begin{itemize}
+		\item Cohérence des tables
+		\item Comprendre le contexte pour isoler les incohérences
+		\item Troubleshooting des incohérences par corrélations
+	\end{itemize}
+\end{frame}
+
+
+\section{Les pain points chez Veolia}
+\begin{frame}{Les pain points chez Veolia}
+	\begin{center}
+	Tâche très coûteuse en temps
+
+	\includegraphics[height=3cm]{chrono.png}
+	\end{center}
+\end{frame}
+
+
+\section{Notre solution: Data Alchemyst}
+\begin{frame}{Notre solution: Data Alchemyst}
+	\vspace*{-1cm}
+	\begin{itemize}
+		\item Fournir un contexte metier
+		\item Fournir les tables qu'on veut analyser
+		\item La solution nous indique ce qu'il faut étudier, et nous épaule
+	\end{itemize}
+\end{frame}
+
+
+
+
+\section{Impact}
+\begin{frame}{Impact}
+	\vspace*{-1cm}
+	\begin{itemize}
+		\item Gain de temps à plusieurs étapes
+		\item Human-in-the-loop pour cadrer le LLM
+	\end{itemize}
+\end{frame}
+
+\section{Architecture}
+\begin{frame}{Architecture}
+	\begin{center}
+	\includegraphics[height=5cm]{archi_AWS.drawio.png}
+	\end{center}
+\end{frame}
+
 
 
 % Conclusion slide
 \section{Conclusion}
 \begin{frame}{Conclusion}
-	\centering
-	\textbf{Thank you! Questions?}
+	\begin{center}
+	\textbf{Merci! Des questions?}
+	\end{center}
 \end{frame}
 
 \end{document}
