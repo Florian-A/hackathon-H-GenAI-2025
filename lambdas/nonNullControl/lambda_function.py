@@ -22,7 +22,7 @@ def lambda_handler(event, context):
     control_description = event.get('control_description', 'Vérification des valeurs NULL dans la colonne DIAMETRE_NOMINAL')
     control_tables      = event.get('control_tables', 'conso')
     input_column_name   = event.get('column_name', 'DIAMETRE_NOMINAL')
-    default_prompt      = f"<s>[INST] Donne moi une requête SQL qui permet de vérifier qu'il s'il y a des nulls dans la colonne {input_column_name} de la table {control_tables} ? Répondre uniquement en ne donnant que la requête SQL [/INST]"
+    default_prompt      = f"<s>[INST] Donne moi une requête SQL qui permet de vérifier s'il y a des nulls dans la colonne {input_column_name} de la table {control_tables} ? Répondre uniquement en ne donnant que la requête SQL [/INST]"
     input_prompt        = event.get('prompt', default_prompt)
     max_tokens          = event.get('max_tokens', 200)
     temperature         = event.get('temperature', 0.5)
