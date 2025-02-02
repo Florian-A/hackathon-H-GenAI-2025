@@ -1,0 +1,127 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploy AWS Bedrock, Amazon Redshift, and AWS Amplify App
+
+Parameters:
+  RedshiftClusterIdentifier:
+    Type: String
+    Default: my-redshift-cluster
+    Description: The Redshift cluster identifier.
+
+  RedshiftMasterUsername:
+    Type: String
+    Default: masteruser
+    Description: The master username for the Redshift cluster.
+
+  RedshiftMasterUserPassword:
+    Type: String
+    NoEcho: true
+    Description: The master user password for the Redshift cluster.
+
+  RedshiftNodeType:
+    Type: String
+    Default: dc2.large
+    AllowedValues:
+      - dc2.large
+      - dc2.8xlarge
+      - ra3.4xlarge
+      - ra3.16xlarge
+    Description: The node type for the Redshift cluster.
+
+  AmplifyRepoURL:
+    Type: String
+    Description: The Git repository URL for the Amplify app.
+
+  AmplifyBranchName:
+    Type: String
+    Default: main
+    Description: The branch name in the repository to deploy.
+
+Resources:
+
+  # Redshift Cluster
+  RedshiftCluster:
+    Type: AWS::Redshift::Cluster
+    Properties:
+      ClusterIdentifier: !Ref RedshiftClusterIdentifier
+      MasterUsername: !Ref RedshiftMasterUsername
+      MasterUserPassword: !Ref RedshiftMasterUserPassword
+      NodeType: !Ref RedshiftNodeType
+      DBName: mydatabase
+      ClusterType: single-node
+      PubliclyAccessible: true
+
+  # AWS Bedrock IAM Role
+  BedrockAccessRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: BedrockServiceAccessRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: bedrock.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: BedrockFullAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - bedrock:InvokeModel
+                  - bedrock:ListFoundationModels
+                Resource: "*"
+
+  # AWS Amplify App
+  AmplifyApp:
+    Type: AWS::Amplify::App
+    Properties:
+      Name: MyAmplifyApp
+      Repository: !Ref AmplifyRepoURL
+      OauthToken: "REPLACE_WITH_OAUTH_TOKEN"  # Optional for private repos
+      BuildSpec: |
+        version: 1
+        frontend:
+          phases:
+            preBuild:
+              commands:
+                - npm install
+            build:
+              commands:
+                - npm run build
+          artifacts:
+            baseDirectory: build
+            files:
+              - '**/*'
+          cache:
+            paths:
+              - node_modules/**/*
+
+  # Amplify Branch (e.g., main)
+  AmplifyBranch:
+    Type: AWS::Amplify::Branch
+    Properties:
+      AppId: !GetAtt AmplifyApp.AppId
+      BranchName: !Ref AmplifyBranchName
+
+Outputs:
+  RedshiftEndpoint:
+    Description: "Redshift Cluster Endpoint"
+    Value: !GetAtt RedshiftCluster.Endpoint.Address
+
+  RedshiftClusterId:
+    Description: "Redshift Cluster Identifier"
+    Value: !Ref RedshiftClusterIdentifier
+
+  BedrockRoleARN:
+    Description: "IAM Role ARN for AWS Bedrock"
+    Value: !GetAtt BedrockAccessRole.Arn
+
+  AmplifyAppId:
+    Description: "AWS Amplify App ID"
+    Value: !GetAtt AmplifyApp.AppId
+
+  AmplifyAppURL:
+    Description: "Amplify App Default Domain"
+    Value: !Sub "https://${AmplifyBranch.BranchName}.${AmplifyApp.DefaultDomain}"

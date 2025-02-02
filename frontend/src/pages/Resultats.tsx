@@ -116,15 +116,15 @@ export default function Resultats() {
         <h1 className="text-2xl font-bold text-black mb-4">Liste des requêtes SQL</h1>
 
         <div className="bg-white rounded-lg shadow-md border-2 border-[#EE2737] flex flex-col">
-          <div className="overflow-auto h-[80vh]">
-            <table className="w-full">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[1500px]">
               <thead className="sticky top-0 bg-gray-50 border-b-2 border-gray-200">
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Fonction</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Description</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[25%]">Requête SQL</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[50%] min-w-[700px]">Requête SQL</th>
                   <th className="px-4 py-2 text-center text-sm font-semibold text-black w-16">Actions</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black flex-1">Résultats</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[60%] min-w-[600px]">Résultats</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
