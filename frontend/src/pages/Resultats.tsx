@@ -63,7 +63,7 @@ export default function Resultats() {
     try {
       const response = await axios.post(SQL_EXEC_API_URL, {
         id: controlId,
-        sql: editedQueries[controlId]
+        query: editedQueries[controlId]
       });
       setResults(prev => ({
         ...prev,
@@ -110,10 +110,10 @@ export default function Resultats() {
               <thead className="sticky top-0 bg-gray-50 border-b-2 border-gray-200">
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Fonction</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-64">Description</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[25%]">Requête SQL</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Description</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[30%]">Requête SQL</th>
                   <th className="px-4 py-2 text-center text-sm font-semibold text-black w-16">Actions</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[25%]">Résultats</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-black flex-1">Résultats</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -127,10 +127,12 @@ export default function Resultats() {
                     <td className="px-4 py-2 text-sm font-medium text-black truncate">
                       {control.control_name}
                     </td>
-                    <td className="px-4 py-2 text-sm text-gray-600 truncate">
-                      {control.control_description}
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      <div className="truncate max-w-[25rem]" title={control.control_description}>
+                        {control.control_description}
+                      </div>
                     </td>
-                    <td className={`px-4 py-2 w-[25%] transition-all duration-200 ${selectedRow === control.id ? 'py-4' : ''
+                    <td className={`px-4 py-2 transition-all duration-200 ${selectedRow === control.id ? 'py-4' : ''
                       }`}>
                       <SqlQueryCell
                         value={editedQueries[control.id]}
