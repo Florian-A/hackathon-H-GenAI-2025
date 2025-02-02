@@ -64,7 +64,10 @@ function Home() {
   useEffect(() => {
     const fetchTables = async () => {
       try {
-        const response = await axios.get('/api/structure');
+        const apiUrl = import.meta.env.DEV 
+          ? '/api/structure'
+          : process.env.STRUCTURE_API_URL;
+        const response = await axios.get(apiUrl);
         setTables(response.data);
       } catch (err) {
         setError('Erreur lors du chargement des tables');
@@ -73,7 +76,7 @@ function Home() {
         setLoading(false);
       }
     };
-
+  
     fetchTables();
   }, []);
 

@@ -2,11 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // URLs des APIs
-const STRUCTURE_API_URL = 'https://2307tm7mb3.execute-api.us-west-2.amazonaws.com/api/get-describe-all-table/'
-const CONTROLS_API_URL = 'https://2307tm7mb3.execute-api.us-west-2.amazonaws.com/api/get-all-pipeline-output/'
-const SQL_EXEC_API_URL = 'https://2307tm7mb3.execute-api.us-west-2.amazonaws.com/api/exec-sql-data/'
+const STRUCTURE_API_URL = 'https://2307tm7mb3.execute-api.us-west-2.amazonaws.com/api/get-describe-all-table/';
+const CONTROLS_API_URL = 'https://2307tm7mb3.execute-api.us-west-2.amazonaws.com/api/get-all-pipeline-output/';
+const SQL_EXEC_API_URL = 'https://2307tm7mb3.execute-api.us-west-2.amazonaws.com/api/exec-sql-data/';
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, mode }) => ({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
@@ -26,11 +26,9 @@ export default defineConfig(({ command }) => ({
       '/api/sql-exec': {
         target: SQL_EXEC_API_URL,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/controls/, '')
+        rewrite: (path) => path.replace(/^\/api\/sql-exec/, '')
       }
-    },
-    open: 'firefox',
-    port: 3000
+    }
   },
   build: {
     outDir: 'build',
@@ -41,8 +39,8 @@ export default defineConfig(({ command }) => ({
     },
   },
   define: {
-    'process.env.API_BASE_URL': command === 'serve'
-      ? JSON.stringify('/api')
-      : JSON.stringify(CONTROLS_API_URL)
+    'process.env.STRUCTURE_API_URL': JSON.stringify(STRUCTURE_API_URL),
+    'process.env.CONTROLS_API_URL': JSON.stringify(CONTROLS_API_URL),
+    'process.env.SQL_EXEC_API_URL': JSON.stringify(SQL_EXEC_API_URL)
   }
 }));

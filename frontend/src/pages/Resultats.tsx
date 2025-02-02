@@ -7,8 +7,14 @@ import SqlQueryCell from '../components/SqlQueryCell';
 import ExecuteButton from '../components/ExecuteButton';
 
 // Mettre à jour la constante API_URL
-const API_URL = '/api/controls';
-const SQL_EXEC_API_URL = '/api/sql-exec';
+const API_URL = import.meta.env.DEV 
+  ? '/api/controls'
+  : process.env.CONTROLS_API_URL;
+
+const SQL_EXECUTION_URL = import.meta.env.DEV 
+  ? '/api/sql-exec'
+  : process.env.SQL_EXEC_API_URL;
+
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
