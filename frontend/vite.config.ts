@@ -2,8 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // URLs des APIs
-const STRUCTURE_API_URL = 'https://j3cxokj4wray522ke5syfmyxwq0uqdtb.lambda-url.us-west-2.on.aws';
-const CONTROLS_API_URL = 'https://qynmg4r7csdhkfx7b66vhirnvq0shygn.lambda-url.us-west-2.on.aws';
+const STRUCTURE_API_URL = 'https://2307tm7mb3.execute-api.us-west-2.amazonaws.com/api/get-describe-all-table/'
+const CONTROLS_API_URL = 'https://2307tm7mb3.execute-api.us-west-2.amazonaws.com/api/get-all-pipeline-output/'
+const SQL_EXEC_API_URL = 'https://2307tm7mb3.execute-api.us-west-2.amazonaws.com/api/exec-sql-data/'
 
 export default defineConfig(({ command }) => ({
   plugins: [react()],
@@ -19,6 +20,11 @@ export default defineConfig(({ command }) => ({
       },
       '/api/controls': {
         target: CONTROLS_API_URL,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/controls/, '')
+      },
+      '/api/sql-exec': {
+        target: SQL_EXEC_API_URL,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/controls/, '')
       }
