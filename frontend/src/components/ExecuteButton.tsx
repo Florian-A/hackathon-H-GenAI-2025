@@ -22,4 +22,4 @@ function ExecuteButton({ onClick, loading }: ExecuteButtonProps) {
     );
 }
 
-export default ExecuteButton; 
+export default ExecuteButton;

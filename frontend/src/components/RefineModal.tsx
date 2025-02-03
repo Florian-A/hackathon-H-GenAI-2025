@@ -61,4 +61,4 @@ export default function RefineModal({ isOpen, onClose, onSubmit }: RefineModalPr
             </div>
         </div>
     );
-} 
+}

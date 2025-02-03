@@ -16,4 +16,4 @@ function RefineButton({ onClick }: RefineButtonProps) {
     );
 }
 
-export default RefineButton; 
+export default RefineButton;

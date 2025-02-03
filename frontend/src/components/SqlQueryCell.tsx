@@ -17,4 +17,4 @@ function SqlQueryCell({ value, onChange, expanded = false }: SqlQueryCellProps) 
     );
 }
 
-export default SqlQueryCell; 
+export default SqlQueryCell;

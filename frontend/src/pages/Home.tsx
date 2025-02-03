@@ -25,41 +25,7 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
-  const [analysisResults, setAnalysisResults] = useState<ColumnDescription[]>([]);
   const navigate = useNavigate();
-
-  const columnDescriptions: { [key: string]: { [key: string]: string } } = {
-    veolia_data_factures: {
-      CLE_ABONNEMENT: "Identifiant de l'abonné",
-      CLE_FACTURE: "Identifiant de la facture. Plusieurs factures peuvent être associées à un même abonné.",
-      DATE_EMISSION_FACTURE: "Date d'émission de la facture",
-      CONSO_FACTURE: "La consommation qui apparaît dans la facture, qui est facturé au consommateur",
-      DATE_RELEVE_INDEX_PRECEDENT_FACTURE_COMPOSITE: "La consommation d'une facture se calcule par la différence d'un index. L'index \"d'aujourd'hui\" moins l'index \"d'hier\". Ici il s'agit de la date de relevé de l'index le plus ancien ayant servi au calcul de la consommation.",
-      DATE_RELEVE_INDEX_FACTURE: "Date de relevé de l'index le plus récent ayant servi au calcul de la consommation.",
-      NB_FACTURES_PAR_PDS: "Le nombre de factures par point de service.",
-      NB_JOURS_CONNUS: "Le nombre de jours connus sur la facture (correspond normalement à la date de relevé index facture moins la date de relevé de l'index précédent)",
-      NUM_FAC_PAR_PDS: "L'ordre de la facture par point de service (1ère facture, 2ème facture, ...)"
-    },
-    veolia_data_consos: {
-      CLE_PDS: "L'identifiant du point de livraison. Le PDS se trouve dans l'identifiant abonnement. L'identifiant abonnement est composé de la manière suivante : \"CLE_PDS\" + ordre de l'abonné sur le point de service (par exemple \"01\", \"02\", ...). Un abonné peut effectivement changer sur un point de livraison.",
-      LIBELLE_REGION: "La région d'appartenance au point de livraison",
-      LIBELLE_TERRITOIRE: "Le territoire d'appartenance au point de livraison",
-      CODE_CONTRAT: "Le code du contrat de délégation de service public auquel est associé le point de livraison",
-      LIBELLE_CATEGORIE_ABONNE: "La catégorie de l'abonné (bâtiment collectif public / privé, industriel, professionnel, ...)",
-      DIAMETRE_NOMINAL: "Le diamètre nominal du compteur (plus le compteur est gros, plus la consommation doit être élevé)",
-      TYPE_ABAQUE: "Le type de méthode qui nous a permis de calculer la consommation (est-on sur du ML, sur du télérelevé, ...)",
-      MOIS_CONSO: "Le mois concerné par la consommation",
-      ANNEE_CONSO: "L'année de la consommation",
-      DATE_CONSO_MOIS: "La date liée à la consommation",
-      VOLUME_MOIS: "Le volume consommé sur le mois / année en question"
-    },
-    veolia_data_abonnements: {
-      CLE_ABONNEMENT: "L'identifiant de l'abonnement",
-      DATE_ENTREE_ABONNEMENT: "La date d'entrée de l'abonné dans le logement",
-      DATE_SOUSCRIPTION_ABONNEMENT: "La date à laquelle l'abonné a souscrit un abonnement",
-      DATE_RESILIATION_ABONNEMENT: "La date de résiliation de l'abonné. Quand l'abonné est hors d'une période active (entre souscription et résiliation), il ne doit pas y avoir deconsommations."
-    }
-  };
 
   useEffect(() => {
     const fetchTables = async () => {
@@ -106,7 +72,7 @@ function Home() {
       const tableColumns = tables[tableName];
       return tableColumns.map(column => ({
         name: column.Field,
-        description: columnDescriptions[tableName]?.[column.Field] || "Description non disponible",
+        description: "Description non disponible",
         table: tableName
       }));
     });
@@ -125,7 +91,7 @@ function Home() {
   return (
     <div className="bg-white h-full">
       <div className="max-w-full h-[90vh] flex">
-        {/* Liste des tables (gauche) */}
+        {/* Table list (left) */}
         <div className="w-96 border-r border-gray-200 py-6 px-4 flex flex-col">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold text-black">Tables disponibles</h2>
@@ -136,7 +102,6 @@ function Home() {
               {selectedTables.size === Object.keys(tables).length ? 'Désélectionner tout' : 'Sélectionner tout'}
             </button>
           </div>
-
 
           <div className="p-2 flex-1 overflow-auto">
             {Object.keys(tables).map((tableName) => (
@@ -161,7 +126,7 @@ function Home() {
             ))}
           </div>
 
-          {/* Bouton Analyser */}
+          {/* Analyze button */}
           <div className="">
             <button
               onClick={analyzeSelectedTables}
@@ -188,54 +153,13 @@ function Home() {
           </div>
         </div>
 
-        {/* Structure de la table (droite) */}
+        {/* Table structure (right) */}
         <div className="flex-1 p-4 overflow-auto">
           {displayedTable ? (
             <TableStructure
               tableName={displayedTable}
               columns={tables[displayedTable]}
             />
-          ) : analysisResults.length > 0 ? (
-            <div className="h-full">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-black">Analyse des colonnes</h2>
-                <button
-                  onClick={() => setAnalysisResults([])}
-                  className="text-sm text-[#EE2737] hover:underline"
-                >
-                  Fermer
-                </button>
-              </div>
-
-              <div className="bg-white rounded-lg shadow-md border-2 border-[#EE2737]">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-50 border-b-2 border-gray-200">
-                      <tr>
-                        <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Table</th>
-                        <th className="px-4 py-2 text-left text-sm font-semibold text-black min-w-[200px] w-48">Colonne</th>
-                        <th className="px-4 py-2 text-left text-sm font-semibold text-black min-w-[400px]">Description</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {analysisResults.map((column, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-4 py-2 text-sm font-medium text-black truncate">
-                            {column.table}
-                          </td>
-                          <td className="px-4 py-2 text-sm text-black truncate">
-                            {column.name}
-                          </td>
-                          <td className="px-4 py-2 text-sm text-gray-600 whitespace-pre-wrap">
-                            {column.description}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
           ) : (
             <div className="flex items-center justify-center h-full text-gray-500">
               Cliquez sur une table pour afficher sa structure
@@ -247,4 +171,4 @@ function Home() {
   );
 }
 
-export default Home; 
+export default Home;

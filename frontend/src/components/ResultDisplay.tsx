@@ -14,8 +14,7 @@ function ResultDisplay({ data, success, message, expanded = false }: ResultDispl
                 {message}
             </div>
             {data && (
-                <div className={`overflow-auto bg-gray-50 p-2 rounded border border-gray-200 transition-all duration-200 ${expanded ? 'max-h-80' : 'max-h-40'
-                    }`}>
+                <div className={`overflow-auto bg-gray-50 p-2 rounded border border-gray-200 transition-all duration-200 ${expanded ? 'max-h-80' : 'max-h-40'}`}>
                     <pre className="text-xs whitespace-pre-wrap">{JSON.stringify(data, null, 2)}</pre>
                 </div>
             )}
@@ -23,4 +22,4 @@ function ResultDisplay({ data, success, message, expanded = false }: ResultDispl
     );
 }
 
-export default ResultDisplay; 
+export default ResultDisplay;

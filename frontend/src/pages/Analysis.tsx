@@ -138,4 +138,4 @@ export default function Analysis() {
       </div>
     </div>
   );
-} 
+}

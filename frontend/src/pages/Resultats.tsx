@@ -8,7 +8,6 @@ import ExecuteButton from '../components/ExecuteButton';
 import RefineModal from '../components/RefineModal';
 import RefineButton from '../components/RefineButton';
 
-// Mettre à jour la constante API_URL
 const API_URL = import.meta.env.DEV
   ? '/api/controls'
   : process.env.CONTROLS_API_URL;
@@ -16,7 +15,6 @@ const API_URL = import.meta.env.DEV
 const SQL_EXEC_API_URL = import.meta.env.DEV
   ? '/api/sql-exec'
   : process.env.SQL_EXEC_API_URL;
-
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
@@ -86,8 +84,6 @@ export default function Resultats() {
 
   const handleRefine = (prompt: string) => {
     if (!selectedQueryId) return;
-
-    // Ici vous pouvez implémenter la logique pour affiner la requête
     console.log(`Refining query ${selectedQueryId} with prompt: ${prompt}`);
   };
 
@@ -116,12 +112,12 @@ export default function Resultats() {
         <h1 className="text-2xl font-bold text-black mb-4">Liste des requêtes SQL</h1>
 
         <div className="bg-white rounded-lg shadow-md border-2 border-[#EE2737] flex flex-col">
-        <div className="overflow-x-auto">
-        <table className="w-full min-w-[1500px]">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[1500px]">
               <thead className="sticky top-0 bg-gray-50 border-b-2 border-gray-200">
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Fonction</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-black w-48">Description</th>
+                  <th className="px-4 py 2 text-left text-sm font-semibold text-black w-48">Description</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[50%] min-w-[700px]">Requête SQL</th>
                   <th className="px-4 py-2 text-center text-sm font-semibold text-black w-16">Actions</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-black w-[60%] min-w-[600px]">Résultats</th>

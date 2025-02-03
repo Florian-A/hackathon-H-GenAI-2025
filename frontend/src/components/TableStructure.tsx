@@ -36,4 +36,4 @@ function TableStructure({ tableName, columns }: TableStructureProps) {
     );
 }
 
-export default TableStructure; 
+export default TableStructure;

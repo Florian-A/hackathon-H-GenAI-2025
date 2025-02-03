@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import veoliaLogo from '../assets/veolialogo.png';
+import { Database } from 'lucide-react';
 
 function Navbar() {
     const location = useLocation();
@@ -15,14 +15,10 @@ function Navbar() {
                     <div className="flex items-center">
                         {/* Logo */}
                         <div className="flex-shrink-0">
-                            <img
-                                src={veoliaLogo}
-                                alt="Veolia Logo"
-                                className="h-20 w-auto"
-                            />
+                            <Database className="h-8 w-8 text-[#EE2737]" />
                         </div>
 
-                        {/* Liens de navigation */}
+                        {/* Navigation links */}
                         <div className="hidden md:block ml-10">
                             <div className="flex space-x-4">
                                 <Link
@@ -52,4 +48,4 @@ function Navbar() {
     );
 }
 
-export default Navbar; 
+export default Navbar;
